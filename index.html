@@ -71,7 +71,7 @@
 
     <br>
     <br>
-        formula = (jumlah orang kaya * 2 * 4) + (jumlah orang miskin * 1) + (orang biasa * 2 )
+        formula = (jumlah orang kaya * 2 * 4) + (jumlah orang miskin * 1) + (jumlah orang miskin tanpa rumah * 0) + (orang biasa * 2 )
     <br>
     <br>
     
@@ -79,17 +79,17 @@
     
     </p>
     <br>
-    Jumlah penduduk laki laki umur 25 - 59 (Kepala Keluarga): 
-    <br><input id="KK" type="number">
+    <input type="checkbox" id="KKCheck" checked> Jumlah penduduk laki laki umur 25 - 59 (Kepala Keluarga): 
+    <br><input id="KK" type="number" value="2812650">
     <br>
-    persentase penduduk miskin(%): 
-    <br><input id="poorPeoplePercentage" type="number">
+    <input type="checkbox" id="poorPeoplePercentageCheck" checked> persentase penduduk miskin(%): 
+    <br><input id="poorPeoplePercentage" type="number" value="4.53">
     <br>
-    persentase penduduk miskin yang tidak mempunyai rumah (%): 
-    <br><input id="poorPeopleWithoutHomePercentage" type="number">
+    <input type="checkbox" id="poorPeopleWithoutHomePercentageCheck" checked>persentase penduduk miskin yang tidak mempunyai rumah (%): 
+    <br><input id="poorPeopleWithoutHomePercentage" type="number" value="48.91">
     <br>
-    Jumlah orang kaya : 
-    <br><input id="richPeople" type="number">
+    <input type="checkbox" id="richPeopleCheck" checked>Jumlah orang kaya : 
+    <br><input id="richPeople" type="number" value="27100">
     <br>
     
     <br>
@@ -102,7 +102,7 @@
 <script src="node_modules/jquery/dist/jquery.js"></script>
 <script >
     $(document).ready(function() {
-        function doorCount(KK, poorPeoplePercentage, poorPeopleWithoutHomePercentage, richPeople){
+        function doorCount(KK=0, poorPeoplePercentage=0, poorPeopleWithoutHomePercentage=0, richPeople=0){
             KK = parseInt(KK);
             poorPeoplePercentage = parseInt(poorPeoplePercentage);
             poorPeopleWithoutHomePercentage = parseInt(poorPeopleWithoutHomePercentage);
@@ -112,14 +112,24 @@
             let poorPeopleWithoutHome = Math.round( poorPeople * poorPeopleWithoutHomePercentage / 100 ) ;
             poorPeople = poorPeople - poorPeopleWithoutHome;
 
-            let result = (richPeople * 2 * 4) + (poorPeople * 1) + ((KK - richPeople - poorPeople) * 2 ) ;
-            return result;
+            let result = (richPeople * 2 * 4) + (poorPeople * 1) + (poorPeopleWithoutHome * 0) + ((KK - richPeople - poorPeople) * 2 ) ;
+            return result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
         $("#submit").click(function(){
-            const KK = $("#KK").val();
-            const poorPeoplePercentage = $("#poorPeoplePercentage").val();
-            const poorPeopleWithoutHomePercentage = $("#poorPeopleWithoutHomePercentage").val();
-            const richPeople = $("#richPeople").val();
+            let KK = $("#KK").val();
+            let poorPeoplePercentage = $("#poorPeoplePercentage").val();
+            let poorPeopleWithoutHomePercentage = $("#poorPeopleWithoutHomePercentage").val();
+            let richPeople = $("#richPeople").val();
+
+
+            if(!$("#KKCheck").is(':checked')) KK = 0;
+            if(!$("#poorPeoplePercentageCheck").is(':checked')) poorPeoplePercentage = 0;
+            if(!$("#poorPeopleWithoutHomePercentageCheck").is(':checked')) poorPeopleWithoutHomePercentage = 0;
+            if(!$("#richPeopleCheck").is(':checked')) richPeople = 0;
+            console.log(KK)
+            console.log(poorPeoplePercentage)
+            console.log(poorPeopleWithoutHomePercentage)
+            console.log(richPeople)
 
             $("#answer").html(doorCount( KK, poorPeoplePercentage, poorPeopleWithoutHomePercentage, richPeople ))
             console.log(doorCount( KK, poorPeoplePercentage, poorPeopleWithoutHomePercentage, richPeople ));
