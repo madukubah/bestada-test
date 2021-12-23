@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body style="padding: 8px">
+    <p>
+    Rumus atau formula untuk menghitung jumlah pintu rumah yang ada di seluruh jakarta
+    </p>
+    <p> 
+
+    batasan: <br>
+    <li>
+        hanya pintu rumah bukan bangunan pencakar langit, ruko, dan kos-kosan
+    </li>
+    <li>
+        pintu rumah yakni pintu depan dan belakang (pintu kamar tidak termasuk) = 2 pintu
+    </li> 
+    <li>
+        pintu dengan 2 daun pintu terhitung 1 pintu
+    </li> 
+    <br>
+    asumsi: <br>
+    <li>
+        orang yang mempunyai rumah merupakan kepala keluarga  dengan rentang umur 25 - 59
+    </li>    
+    <li>
+        orang miskin tidak semua memiliki rumah
+    </li>    
+    <li>
+        ada orang kelas atas mempunyai lebih dari 1 rumah ( minimal 2 rumah )
+    </li> 
+    <li>
+        orang kelas atas biasanya mempunyai rumah bertingkat dengan 4 pintu rumah
+    </li> 
+        orang miskin biasanya mempunyai rumah dengan 1 pintu rumah (perkampungan kumuh)
+    </li> 
+    </p>
+    
+    diketahui
+    <li>
+        jumlah KK = 3.614.985 ( jumlah KK berdasarkan jenis kelamin tahun 2020 )
+    </li>
+    <li>
+        jumlah penduduk jakarta = 10.562.088 ( <a href="https://jakarta.bps.go.id/indicator/12/111/1/jumlah-penduduk-provinsi-dki-jakarta-menurut-kelompok-umur-dan-jenis-kelamin.html">BPS Provinsi DKI Jakarta tahun 2020 </a>)
+    </li>
+    <li>
+        jumlah laki laki penduduk jakarta umur 25 - 59 (kepala keluarga)  = 2.812.650 orang ( <a href="https://jakarta.bps.go.id/indicator/12/111/1/jumlah-penduduk-provinsi-dki-jakarta-menurut-kelompok-umur-dan-jenis-kelamin.html">BPS Provinsi DKI Jakarta tahun 2020 </a>)
+    </li>
+    <li>
+        persentase orang miskin 4,53% ( <a href="https://jakarta.bps.go.id/indicator/23/645/1/garis-kemiskinan-jumlah-dan-persentase-penduduk-miskin-di-daerah-menurut-kabupaten-kota-di-provinsi-dki-jakarta.html"> BPS Provinsi DKI Jakarta tahun 2020 </a> )
+    </li>
+    <li>
+        persentase orang miskin tidak punya rumah 48,91% ( <a href="https://www.republika.co.id/berita/oj6tw2/48-juta-penduduk-jakarta-tak-punya-rumah"> www.republika.co.id </a> )
+    </li>
+    <li>
+        jumlah orang miskin = 4,53% * 2.812.650 = 127.413 orang
+    </li>
+    <li>
+        jumlah orang miskin tidak punya rumah = 48,91% * 127.413 = 62.317  orang
+    </li>
+    <li>
+        Jutawan yang Tinggal di Jakarta (orang kaya) = 27.100 orang
+    </li>
+    <li>
+        jumlah rumah Jutawan yang Tinggal di Jakarta (orang kaya) = 27.100 * 2 * 4 = 216.800 pintu rumah
+    </li>
+
+
+    <br>
+    <br>
+        formula = (jumlah orang kaya * 2 * 4) + (jumlah orang miskin * 1) + (orang biasa * 2 )
+    <br>
+    <br>
+    
+    berdasarkan informasi yang saya dapatkan, berikut merupakan jawaban saya, akan tetapi perlu di perhatikan untuk rumah yang di huni lebih dari satu KK, tingkat okenomi (miskin, menengah, atas) dan juga pintu untuk rumah yang di bangun sendiri ( tidak diketahui jumlah pintu ).
+    
+    </p>
+    <br>
+    Jumlah penduduk laki laki umur 25 - 59 (Kepala Keluarga): 
+    <br><input id="KK" type="number">
+    <br>
+    persentase penduduk miskin(%): 
+    <br><input id="poorPeoplePercentage" type="number">
+    <br>
+    persentase penduduk miskin yang tidak mempunyai rumah (%): 
+    <br><input id="poorPeopleWithoutHomePercentage" type="number">
+    <br>
+    Jumlah orang kaya : 
+    <br><input id="richPeople" type="number">
+    <br>
+    
+    <br>
+    <button id="submit" type="submit">Hitung</button>
+    <br>
+    <br>
+    jumlah Pintu rumah: <span id="answer"></span>
+    
+</body>
+<script src="node_modules/jquery/dist/jquery.js"></script>
+<script >
+    $(document).ready(function() {
+        function doorCount(KK, poorPeoplePercentage, poorPeopleWithoutHomePercentage, richPeople){
+            KK = parseInt(KK);
+            poorPeoplePercentage = parseInt(poorPeoplePercentage);
+            poorPeopleWithoutHomePercentage = parseInt(poorPeopleWithoutHomePercentage);
+            richPeople = parseInt(richPeople);
+
+            let poorPeople = Math.round(poorPeoplePercentage / 100 * KK ) ;
+            let poorPeopleWithoutHome = Math.round( poorPeople * poorPeopleWithoutHomePercentage / 100 ) ;
+            poorPeople = poorPeople - poorPeopleWithoutHome;
+
+            let result = (richPeople * 2 * 4) + (poorPeople * 1) + ((KK - richPeople - poorPeople) * 2 ) ;
+            return result;
+        }
+        $("#submit").click(function(){
+            const KK = $("#KK").val();
+            const poorPeoplePercentage = $("#poorPeoplePercentage").val();
+            const poorPeopleWithoutHomePercentage = $("#poorPeopleWithoutHomePercentage").val();
+            const richPeople = $("#richPeople").val();
+
+            $("#answer").html(doorCount( KK, poorPeoplePercentage, poorPeopleWithoutHomePercentage, richPeople ))
+            console.log(doorCount( KK, poorPeoplePercentage, poorPeopleWithoutHomePercentage, richPeople ));
+        })
+    })
+</script>
+</html>
